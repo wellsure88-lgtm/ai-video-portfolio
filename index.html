@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>作品集 — AI 视频 & 动画</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #14141f;
+    --surface2: #1e1e2e;
+    --text: #e4e4ec;
+    --text2: #9898b0;
+    --accent-ai: #a78bfa;
+    --accent-ai2: #7c3aed;
+    --accent-anim: #34d399;
+    --accent-anim2: #059669;
+    --radius: 16px;
+  }
+
+  html { scroll-behavior:smooth; }
+  body {
+    font-family:'Inter','Noto Sans SC',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:16px 40px;
+    display:flex; align-items:center; justify-content:space-between;
+    backdrop-filter:blur(20px);
+    background:rgba(10,10,15,0.8);
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  nav .logo { font-size:20px; font-weight:700; background:linear-gradient(135deg, var(--accent-ai) 0%, var(--accent-anim) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  nav .links { display:flex; gap:32px; list-style:none; }
+  nav .links a { color:var(--text2); text-decoration:none; font-size:14px; font-weight:500; transition:color 0.3s; }
+  nav .links a:hover { color:var(--text); }
+
+  .hero {
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    position:relative; padding:120px 40px 80px; text-align:center; overflow:hidden;
+  }
+  .hero::before {
+    content:'';
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(124,58,237,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 60%, rgba(52,211,153,0.08) 0%, transparent 50%);
+    pointer-events:none;
+  }
+  .hero-content { position:relative; z-index:1; max-width:800px; }
+  .hero-badges { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:24px; }
+  .hero-badges span {
+    display:inline-block; padding:6px 16px; border-radius:100px;
+    font-size:13px; font-weight:500;
+  }
+  .hero-badges .badge-ai {
+    background:rgba(167,139,250,0.15); border:1px solid rgba(167,139,250,0.3); color:var(--accent-ai);
+  }
+  .hero-badges .badge-anim {
+    background:rgba(52,211,153,0.12); border:1px solid rgba(52,211,153,0.3); color:var(--accent-anim);
+  }
+  .hero h1 { font-size:clamp(36px,6vw,64px); font-weight:700; line-height:1.15; margin-bottom:20px; letter-spacing:-0.02em; }
+  .hero h1 .ai { background:linear-gradient(135deg, #a78bfa, #7c3aed); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .hero h1 .anim { background:linear-gradient(135deg, #34d399, #059669); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .hero p { font-size:18px; color:var(--text2); max-width:540px; margin:0 auto 40px; }
+  .scroll-hint {
+    position:absolute; bottom:40px; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    color:var(--text2); font-size:12px; animation:bounce 2s infinite;
+  }
+  .scroll-hint .arrow { width:20px; height:20px; border-right:2px solid var(--text2); border-bottom:2px solid var(--text2); transform:rotate(45deg); }
+  @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+  section { padding:80px 40px; max-width:1280px; margin:0 auto; }
+
+  .section-label {
+    display:inline-block; padding:4px 12px; border-radius:100px;
+    font-size:12px; font-weight:600; letter-spacing:0.05em; margin-bottom:12px;
+  }
+  .section-label.ai  { background:rgba(167,139,250,0.12); color:var(--accent-ai); }
+  .section-label.anim { background:rgba(52,211,153,0.12); color:var(--accent-anim); }
+  .section-header { text-align:center; margin-bottom:60px; }
+  .section-header h2 { font-size:clamp(28px,4vw,40px); font-weight:700; margin-bottom:12px; letter-spacing:-0.01em; }
+  .section-header p { color:var(--text2); font-size:16px; }
+
+  .divider {
+    max-width:200px; margin:0 auto 80px;
+    height:1px;
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  }
+
+  .gallery {
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(340px, 1fr));
+    gap:24px;
+  }
+  .video-card {
+    background:var(--surface);
+    border-radius:var(--radius); overflow:hidden;
+    border:1px solid rgba(255,255,255,0.06);
+    cursor:pointer;
+    transition:transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+  }
+  .video-card:hover { transform:translateY(-4px); }
+  .video-card.ai:hover {
+    box-shadow:0 20px 60px rgba(124,58,237,0.15);
+    border-color:rgba(167,139,250,0.3);
+  }
+  .video-card.anim:hover {
+    box-shadow:0 20px 60px rgba(52,211,153,0.12);
+    border-color:rgba(52,211,153,0.3);
+  }
+  .video-card .thumb {
+    position:relative; aspect-ratio:16/9;
+    background:var(--surface2); overflow:hidden;
+  }
+  .video-card .thumb img {
+    width:100%; height:100%; object-fit:cover;
+    transition:transform 0.4s;
+  }
+  .video-card:hover .thumb img { transform:scale(1.05); }
+  .video-card .thumb .duration {
+    position:absolute; bottom:8px; right:8px;
+    padding:2px 8px; border-radius:6px;
+    background:rgba(0,0,0,0.75); color:#fff;
+    font-size:12px; font-weight:500;
+  }
+  .video-card .play-overlay {
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(0,0,0,0.25);
+    opacity:0; transition:opacity 0.3s;
+  }
+  .video-card:hover .play-overlay { opacity:1; }
+  .play-overlay .circle {
+    width:56px; height:56px; border-radius:50%;
+    background:rgba(255,255,255,0.95);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 8px 32px rgba(0,0,0,0.3);
+  }
+  .video-card.ai .play-overlay .triangle {
+    border-left:18px solid var(--accent-ai2);
+    border-top:10px solid transparent;
+    border-bottom:10px solid transparent;
+    margin-left:4px;
+  }
+  .video-card.anim .play-overlay .triangle {
+    border-left:18px solid var(--accent-anim2);
+    border-top:10px solid transparent;
+    border-bottom:10px solid transparent;
+    margin-left:4px;
+  }
+  .video-card .info { padding:20px; }
+  .video-card .info .cat {
+    font-size:11px; font-weight:600; letter-spacing:0.05em; margin-bottom:6px;
+  }
+  .video-card.ai .info .cat { color:var(--accent-ai); }
+  .video-card.anim .info .cat { color:var(--accent-anim); }
+  .video-card .info h3 { font-size:16px; font-weight:600; margin-bottom:4px; }
+  .video-card .info .meta { font-size:13px; color:var(--text2); }
+
+  .modal {
+    position:fixed; inset:0; z-index:200;
+    background:rgba(0,0,0,0.92);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none; transition:opacity 0.3s;
+  }
+  .modal.open { opacity:1; pointer-events:all; }
+  .modal .close {
+    position:absolute; top:24px; right:32px;
+    width:44px; height:44px; border-radius:50%;
+    background:rgba(255,255,255,0.1); border:none;
+    color:#fff; font-size:24px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:background 0.3s; z-index:10;
+  }
+  .modal .close:hover { background:rgba(255,255,255,0.2); }
+  .modal .title-bar {
+    position:absolute; top:28px; left:50%; transform:translateX(-50%);
+    color:#fff; font-size:18px; font-weight:600; z-index:5;
+  }
+  .modal .player-wrap {
+    width:90vw; max-width:1100px; aspect-ratio:16/9;
+    border-radius:12px; overflow:hidden;
+    box-shadow:0 40px 120px rgba(0,0,0,0.5); background:#000;
+  }
+  .modal .player-wrap iframe { width:100%; height:100%; border:0; }
+
+  .about {
+    display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
+  }
+  .about-img {
+    aspect-ratio:4/3; border-radius:var(--radius); overflow:hidden;
+    background:var(--surface); border:1px solid rgba(255,255,255,0.06);
+  }
+  .about-img img { width:100%; height:100%; object-fit:cover; }
+  .about-text h2 { font-size:32px; margin-bottom:20px; }
+  .about-text p { color:var(--text2); margin-bottom:16px; font-size:15px; }
+  .about-text .two-col { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:20px; }
+  .about-text .stat { text-align:center; padding:16px; background:var(--surface); border-radius:12px; border:1px solid rgba(255,255,255,0.06); }
+  .about-text .stat .num { font-size:28px; font-weight:700; }
+  .about-text .stat .num.ai { color:var(--accent-ai); }
+  .about-text .stat .num.anim { color:var(--accent-anim); }
+  .about-text .stat .label { font-size:13px; color:var(--text2); margin-top:4px; }
+
+  .skills { display:flex; flex-wrap:wrap; gap:8px; margin-top:24px; }
+  .skill-tag {
+    padding:6px 14px; border-radius:100px;
+    background:rgba(167,139,250,0.1); border:1px solid rgba(167,139,250,0.2);
+    color:var(--accent-ai); font-size:13px; font-weight:500;
+  }
+
+  footer {
+    text-align:center; padding:40px;
+    border-top:1px solid rgba(255,255,255,0.06);
+    color:var(--text2); font-size:14px;
+  }
+
+  @media (max-width:768px) {
+    nav { padding:14px 20px; }
+    nav .links { gap:16px; }
+    section { padding:60px 20px; }
+    .gallery { grid-template-columns:1fr; }
+    .about { grid-template-columns:1fr; gap:32px; }
+    .hero { padding:100px 20px 60px; }
+    .modal .player-wrap { width:95vw; }
+    .modal .title-bar { font-size:14px; top:20px; }
+    .about-text .two-col { grid-template-columns:1fr 1fr; }
+  }
+
+  .particles { position:fixed; inset:0; pointer-events:none; z-index:0; }
+  .particle {
+    position:absolute; border-radius:50%; opacity:0.1;
+    animation:float 20s infinite ease-in-out;
+  }
+  .particle.p1 { background:var(--accent-ai); }
+  .particle.p2 { background:var(--accent-anim); }
+  @keyframes float {
+    0%,100%{transform:translateY(0) translateX(0) scale(1)}
+    25%{transform:translateY(-60px) translateX(30px) scale(0.8)}
+    50%{transform:translateY(-20px) translateX(-20px) scale(1.1)}
+    75%{transform:translateY(-80px) translateX(-40px) scale(0.9)}
+  }
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<nav>
+  <div class="logo">Portfolio</div>
+  <ul class="links">
+    <li><a href="#ai">AI 视频</a></li>
+    <li><a href="#anim">个人动画</a></li>
+    <li><a href="#about">关于</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-badges">
+      <span class="badge-ai">AI 视频广告</span>
+      <span class="badge-anim">个人动画短片</span>
+    </div>
+    <h1>用<span class="ai">AI</span> 与 <span class="anim">画笔</span><br>创造视觉故事</h1>
+    <p>AI 商业视频 + 原创动画短片作品集，展示从商业广告到个人创作的全方位视觉能力</p>
+  </div>
+  <div class="scroll-hint">
+    <span>向下滚动查看作品</span>
+    <div class="arrow"></div>
+  </div>
+</section>
+
+<!-- AI 视频 -->
+<section id="ai">
+  <div class="section-header">
+    <div class="section-label ai">AI VIDEO</div>
+    <h2>AI 视频作品</h2>
+    <p>使用 AI 工具生成的商业广告视频，展示 AI 视觉创作能力</p>
+  </div>
+  <div class="gallery" id="gallery-ai"></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 个人动画 -->
+<section id="anim">
+  <div class="section-header">
+    <div class="section-label anim">ANIMATION</div>
+    <h2>个人动画作品</h2>
+    <p>原创动画短片，独立完成从创意到成片的完整流程</p>
+  </div>
+  <div class="gallery" id="gallery-anim"></div>
+</section>
+
+<section id="about">
+  <div class="section-header">
+    <h2>关于我</h2>
+    <p>AI 视觉创作者 & 动画人</p>
+  </div>
+  <div class="about">
+    <div class="about-img">
+      <img src="16.png" alt="作品海报">
+    </div>
+    <div class="about-text">
+      <h2>AI 视频创作者</h2>
+      <p>致力于利用最新的生成式 AI 技术，创作高质量的视觉内容。从概念设计到成品输出，AI 工具贯穿整个创作流程。</p>
+      <p>擅长即梦（Jimeng）、Runway、Pika 等主流 AI 视频生成平台，能够精准控制分镜、风格和人物动作，确保每一帧都达到专业水准。同时具备独立动画制作能力，从手绘到后期全流程把控。</p>
+      <div class="two-col">
+        <div class="stat"><div class="num ai">4</div><div class="label">AI 商业视频</div></div>
+        <div class="stat"><div class="num anim">5</div><div class="label">原创动画短片</div></div>
+      </div>
+      <div class="skills">
+        <span class="skill-tag">AI 视频生成</span>
+        <span class="skill-tag">即梦 Jimeng</span>
+        <span class="skill-tag">Runway</span>
+        <span class="skill-tag">Pika</span>
+        <span class="skill-tag">分镜设计</span>
+        <span class="skill-tag">动画制作</span>
+        <span class="skill-tag">后期剪辑</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2025 Portfolio. AI Videos & Original Animations.</p>
+</footer>
+
+<div class="modal" id="modal">
+  <div class="title-bar" id="modalTitle"></div>
+  <button class="close" id="modalClose">&times;</button>
+  <div class="player-wrap" id="modalPlayer"></div>
+</div>
+
+<script>
+const aiWorks = [
+  { title:'领导让我复刻国产爱死机打广告，我尽力了',   bvid:'BV1vgG46eEUf', cat:'AI 视频广告' },
+  { title:'公司说我的广告已经超出人类范畴了。。。。',   bvid:'BV1VLG46cEWh', cat:'AI 视频广告' },
+  { title:'为了打广告我也是尽心尽力了',                 bvid:'BV15VG46aEGR', cat:'AI 视频广告' },
+  { title:'林黛玉会如何收礼物？',                       bvid:'BV1eVG46aED7', cat:'AI 视频广告' },
+];
+
+const animWorks = [
+  { title:'很多年以后 | 我才意识到我爱你',               bvid:'BV1qJ1WY7EHq', cat:'原创动画' },
+  { title:'又肝了一个凉酱小动画',                       bvid:'BV1BFynYzEDL', cat:'原创动画' },
+  { title:'肝了一个波奇酱听音乐的小动画',               bvid:'BV1fQyPYfET3', cat:'原创动画' },
+  { title:'男人什么时候最紧张...',                      bvid:'BV1sF1yYDED8', cat:'原创动画' },
+  { title:'阿尧和阿林的日常',                           bvid:'BV19WxrefEDK', cat:'原创动画' },
+];
+
+const API = 'https://api.bilibili.com/x/web-interface/view?bvid=';
+
+const modal = document.getElementById('modal');
+const modalTitle = document.getElementById('modalTitle');
+const modalPlayer = document.getElementById('modalPlayer');
+const modalClose = document.getElementById('modalClose');
+
+function formatDuration(sec) {
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return m + ':' + String(s).padStart(2,'0');
+}
+
+async function buildSection(galleryId, works, category) {
+  const gallery = document.getElementById(galleryId);
+  for (const w of works) {
+    const card = document.createElement('div');
+    card.className = 'video-card ' + category;
+
+    card.innerHTML = `
+      <div class="thumb">
+        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:14px;">
+          <span>加载中...</span>
+        </div>
+      </div>
+      <div class="info">
+        <div class="cat">${w.cat}</div>
+        <h3>${w.title}</h3>
+      </div>
+    `;
+
+    if (w.bvid) {
+      try {
+        const r = await fetch(API + w.bvid);
+        const j = await r.json();
+        if (j.code === 0 && j.data) {
+          const d = j.data;
+          card.querySelector('.thumb').innerHTML = `
+            <img src="${d.pic}" alt="${w.title}" loading="lazy"
+                 onerror="this.parentElement.innerHTML='<div style=width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text2)>封面加载失败</div>'">
+            <div class="duration">${formatDuration(d.duration)}</div>
+            <div class="play-overlay">
+              <div class="circle"><div class="triangle"></div></div>
+            </div>
+          `;
+          card.querySelector('.info h3').textContent = d.title || w.title;
+        }
+      } catch(e) {
+        card.querySelector('.thumb').innerHTML = `
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:14px;">
+            <span>B站信息加载失败</span>
+          </div>`;
+      }
+    }
+
+    card.addEventListener('click', () => {
+      if (!w.bvid) return;
+      modalTitle.textContent = w.title;
+      modalPlayer.innerHTML = `<iframe src="//player.bilibili.com/player.html?bvid=${w.bvid}&page=1&high_quality=1&autoplay=1" allowfullscreen></iframe>`;
+      modal.classList.add('open');
+    });
+    gallery.appendChild(card);
+  }
+}
+
+buildSection('gallery-ai', aiWorks, 'ai');
+buildSection('gallery-anim', animWorks, 'anim');
+
+modalClose.addEventListener('click', () => {
+  modal.classList.remove('open');
+  modalPlayer.innerHTML = '';
+});
+modal.addEventListener('click', e => {
+  if (e.target === modal) {
+    modal.classList.remove('open');
+    modalPlayer.innerHTML = '';
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && modal.classList.contains('open')) {
+    modal.classList.remove('open');
+    modalPlayer.innerHTML = '';
+  }
+});
+
+// Particles
+const pc = document.getElementById('particles');
+for (let i=0;i<12;i++) {
+  const p = document.createElement('div');
+  p.className = 'particle ' + (i%2 ? 'p1' : 'p2');
+  const s = Math.random()*4+2;
+  p.style.cssText = `
+    width:${s}px; height:${s}px;
+    left:${Math.random()*100}%; top:${Math.random()*100}%;
+    animation-delay:${Math.random()*20}s;
+    animation-duration:${Math.random()*20+15}s;
+  `;
+  pc.appendChild(p);
+}
+</script>
+</body>
+</html>
