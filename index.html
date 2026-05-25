@@ -345,43 +345,37 @@
 
 <script>
 const aiWorks = [
-  { title:'领导让我复刻国产爱死机打广告，我尽力了',   bvid:'BV1vgG46eEUf', cat:'AI 视频广告' },
-  { title:'公司说我的广告已经超出人类范畴了。。。。',   bvid:'BV1VLG46cEWh', cat:'AI 视频广告' },
-  { title:'为了打广告我也是尽心尽力了',                 bvid:'BV15VG46aEGR', cat:'AI 视频广告' },
-  { title:'林黛玉会如何收礼物？',                       bvid:'BV1eVG46aED7', cat:'AI 视频广告' },
+  { title:'领导让我复刻国产爱死机打广告，我尽力了',   bvid:'BV1vgG46eEUf', cat:'AI 视频广告', cover:'https://i0.hdslb.com/bfs/archive/fe3d4bd45dbe76dfe431bb039b8523a0aebe8bc1.jpg', dur:'1:08' },
+  { title:'公司说我的广告已经超出人类范畴了。。。。',   bvid:'BV1VLG46cEWh', cat:'AI 视频广告', cover:'https://i0.hdslb.com/bfs/archive/ded0fc3be3f774ca351a914859029ca2080027a0.jpg', dur:'0:13' },
+  { title:'为了打广告我也是尽心尽力了',                 bvid:'BV15VG46aEGR', cat:'AI 视频广告', cover:'https://i1.hdslb.com/bfs/archive/e5aad532a6b21e8ff3a8b1b027d96899b0b4d39f.jpg', dur:'0:43' },
+  { title:'林黛玉会如何收礼物？',                       bvid:'BV1eVG46aED7', cat:'AI 视频广告', cover:'https://i1.hdslb.com/bfs/archive/63af4b6a31e16031050cadc84d2520e3f28e6e52.jpg', dur:'0:16' },
 ];
 
 const animWorks = [
-  { title:'很多年以后 | 我才意识到我爱你',               bvid:'BV1qJ1WY7EHq', cat:'原创动画' },
-  { title:'又肝了一个凉酱小动画',                       bvid:'BV1BFynYzEDL', cat:'原创动画' },
-  { title:'肝了一个波奇酱听音乐的小动画',               bvid:'BV1fQyPYfET3', cat:'原创动画' },
-  { title:'男人什么时候最紧张...',                      bvid:'BV1sF1yYDED8', cat:'原创动画' },
-  { title:'阿尧和阿林的日常',                           bvid:'BV19WxrefEDK', cat:'原创动画' },
+  { title:'很多年以后 | 我才意识到我爱你',               bvid:'BV1qJ1WY7EHq', cat:'原创动画', cover:'https://i1.hdslb.com/bfs/archive/4ea7781e1ee019f6869dfd10660d895eb760783f.jpg', dur:'0:25' },
+  { title:'又肝了一个凉酱小动画',                       bvid:'BV1BFynYzEDL', cat:'原创动画', cover:'https://i1.hdslb.com/bfs/archive/8e687e1e08a5b99c6a88d933d738473b0a5d21b7.jpg', dur:'0:12' },
+  { title:'肝了一个波奇酱听音乐的小动画',               bvid:'BV1fQyPYfET3', cat:'原创动画', cover:'https://i2.hdslb.com/bfs/archive/a579c0cdfd2800b1fa7427234d45973e551827ad.jpg', dur:'0:10' },
+  { title:'男人什么时候最紧张...',                      bvid:'BV1sF1yYDED8', cat:'原创动画', cover:'https://i1.hdslb.com/bfs/archive/d8a39a78fb8e2561f71217f5f1b813f7c41443ad.jpg', dur:'0:16' },
+  { title:'阿尧和阿林的日常',                           bvid:'BV19WxrefEDK', cat:'原创动画', cover:'https://i2.hdslb.com/bfs/archive/db0b67d6fd46803e231224684181d2fdba44f451.jpg', dur:'1:00' },
 ];
-
-const API = 'https://api.bilibili.com/x/web-interface/view?bvid=';
 
 const modal = document.getElementById('modal');
 const modalTitle = document.getElementById('modalTitle');
 const modalPlayer = document.getElementById('modalPlayer');
 const modalClose = document.getElementById('modalClose');
 
-function formatDuration(sec) {
-  const m = Math.floor(sec / 60);
-  const s = sec % 60;
-  return m + ':' + String(s).padStart(2,'0');
-}
-
-async function buildSection(galleryId, works, category) {
+function buildSection(galleryId, works, category) {
   const gallery = document.getElementById(galleryId);
   for (const w of works) {
     const card = document.createElement('div');
     card.className = 'video-card ' + category;
-
     card.innerHTML = `
       <div class="thumb">
-        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:14px;">
-          <span>加载中...</span>
+        <img src="${w.cover}" alt="${w.title}" loading="lazy"
+             onerror="this.parentElement.innerHTML='<div style=width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text2)>封面</div>'">
+        <div class="duration">${w.dur}</div>
+        <div class="play-overlay">
+          <div class="circle"><div class="triangle"></div></div>
         </div>
       </div>
       <div class="info">
@@ -389,33 +383,7 @@ async function buildSection(galleryId, works, category) {
         <h3>${w.title}</h3>
       </div>
     `;
-
-    if (w.bvid) {
-      try {
-        const r = await fetch(API + w.bvid);
-        const j = await r.json();
-        if (j.code === 0 && j.data) {
-          const d = j.data;
-          card.querySelector('.thumb').innerHTML = `
-            <img src="${d.pic}" alt="${w.title}" loading="lazy"
-                 onerror="this.parentElement.innerHTML='<div style=width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text2)>封面加载失败</div>'">
-            <div class="duration">${formatDuration(d.duration)}</div>
-            <div class="play-overlay">
-              <div class="circle"><div class="triangle"></div></div>
-            </div>
-          `;
-          card.querySelector('.info h3').textContent = d.title || w.title;
-        }
-      } catch(e) {
-        card.querySelector('.thumb').innerHTML = `
-          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:14px;">
-            <span>B站信息加载失败</span>
-          </div>`;
-      }
-    }
-
     card.addEventListener('click', () => {
-      if (!w.bvid) return;
       modalTitle.textContent = w.title;
       modalPlayer.innerHTML = `<iframe src="//player.bilibili.com/player.html?bvid=${w.bvid}&page=1&high_quality=1&autoplay=1" allowfullscreen></iframe>`;
       modal.classList.add('open');
