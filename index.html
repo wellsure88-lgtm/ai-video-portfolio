@@ -3,340 +3,734 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>作品集 — AI 视频 & 动画</title>
+<title>Wellsure — AI 视频 & 动画作品集</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
 
   * { margin:0; padding:0; box-sizing:border-box; }
 
+  html, body { width: 100%; min-height: 100vh; }
+
   :root {
-    --bg: #0a0a0f;
-    --surface: #14141f;
-    --surface2: #1e1e2e;
-    --text: #e4e4ec;
-    --text2: #9898b0;
-    --accent-ai: #a78bfa;
-    --accent-ai2: #7c3aed;
-    --accent-anim: #34d399;
-    --accent-anim2: #059669;
-    --radius: 16px;
+    --bg: #FBF8F4;
+    --surface: #FFFFFF;
+    --surface2: #F5F0EA;
+    --text: #1C1917;
+    --text2: #78716C;
+    --text3: #A8A29E;
+    --border: #E7E0D8;
+    --border-light: #F0EBE5;
+    --accent-mint: #41D2A0;
+    --accent-mint-hover: #1BA87C;
+    --accent-cool: #5B7A8C;
+    --accent-cool-light: #E8F0F4;
+    --accent-cool-dark: #3D5A6E;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.08);
+    --radius-sm: 8px;
+    --radius: 14px;
+    --radius-lg: 20px;
+    --transition: 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
   }
 
   html { scroll-behavior:smooth; }
   body {
-    font-family:'Inter','Noto Sans SC',sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    line-height:1.6;
-    overflow-x:hidden;
+    font-family: 'Inter', 'Noto Sans SC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .scroll-progress {
+    position: fixed; top: 0; left: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent-mint), #6FE0B5);
+    z-index: 1000; width: 0%;
+    transition: width 0.1s linear;
   }
 
   nav {
-    position:fixed; top:0; left:0; right:0; z-index:100;
-    padding:16px 40px;
-    display:flex; align-items:center; justify-content:space-between;
-    backdrop-filter:blur(20px);
-    background:rgba(10,10,15,0.8);
-    border-bottom:1px solid rgba(255,255,255,0.06);
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+    padding: 18px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: all var(--transition);
+    background: transparent;
   }
-  nav .logo { font-size:20px; font-weight:700; background:linear-gradient(135deg, var(--accent-ai) 0%, var(--accent-anim) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-  nav .links { display:flex; gap:32px; list-style:none; }
-  nav .links a { color:var(--text2); text-decoration:none; font-size:14px; font-weight:500; transition:color 0.3s; }
-  nav .links a:hover { color:var(--text); }
+  nav.scrolled {
+    background: rgba(251,248,244,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 48px;
+  }
+  nav .logo {
+    font-size: 22px; font-weight: 700; color: #fff;
+    letter-spacing: -0.02em;
+    transition: color var(--transition);
+  }
+  nav .logo-dot {
+    display: inline-block; width: 7px; height: 7px;
+    background: var(--accent-mint); border-radius: 50%;
+    margin-left: 2px; vertical-align: middle;
+    margin-bottom: 4px;
+  }
+  nav .links { display: flex; gap: 36px; list-style: none; align-items: center; }
+  nav .links a {
+    color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 450;
+    transition: color var(--transition); position: relative;
+  }
+  nav .links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1.5px;
+    background: var(--accent-mint); transition: width var(--transition);
+  }
+  nav .links a:hover { color: #fff; }
+  nav .links a:hover::after { width: 100%; }
 
+  /* Nav switches to dark when scrolled */
+  nav.scrolled .logo { color: var(--text); }
+  nav.scrolled .links a { color: var(--text2); }
+  nav.scrolled .links a:hover { color: var(--text); }
+
+  /* Hero */
   .hero {
-    min-height:100vh;
-    display:flex; align-items:center; justify-content:center;
-    position:relative; padding:120px 40px 80px; text-align:center; overflow:hidden;
+    width: 100%;
+    max-width: none;
+    height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; padding: 40px 48px; text-align: center; overflow: hidden;
+    margin: 0;
+    background-image: url('网页主图.png');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
   }
   .hero::before {
-    content:'';
-    position:absolute; inset:0;
-    background:
-      radial-gradient(ellipse at 30% 20%, rgba(124,58,237,0.12) 0%, transparent 50%),
-      radial-gradient(ellipse at 70% 60%, rgba(52,211,153,0.08) 0%, transparent 50%);
-    pointer-events:none;
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 0;
   }
-  .hero-content { position:relative; z-index:1; max-width:800px; }
-  .hero-badges { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:24px; }
-  .hero-badges span {
-    display:inline-block; padding:6px 16px; border-radius:100px;
-    font-size:13px; font-weight:500;
+  .hero-content { position: relative; z-index: 1; max-width: 780px; }
+  .hero-eyebrow {
+    display: inline-block; padding: 5px 16px; border-radius: 100px;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.04em;
+    background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9);
+    margin-bottom: 28px;
   }
-  .hero-badges .badge-ai {
-    background:rgba(167,139,250,0.15); border:1px solid rgba(167,139,250,0.3); color:var(--accent-ai);
+  .hero h1 {
+    font-size: clamp(38px, 6.5vw, 68px); font-weight: 700;
+    line-height: 1.12; margin-bottom: 24px; letter-spacing: -0.025em;
+    color: #fff;
   }
-  .hero-badges .badge-anim {
-    background:rgba(52,211,153,0.12); border:1px solid rgba(52,211,153,0.3); color:var(--accent-anim);
+  .hero h1 .highlight {
+    background: linear-gradient(135deg, var(--accent-mint) 0%, #5CD9AA 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
-  .hero h1 { font-size:clamp(36px,6vw,64px); font-weight:700; line-height:1.15; margin-bottom:20px; letter-spacing:-0.02em; }
-  .hero h1 .ai { background:linear-gradient(135deg, #a78bfa, #7c3aed); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-  .hero h1 .anim { background:linear-gradient(135deg, #34d399, #059669); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-  .hero p { font-size:18px; color:var(--text2); max-width:540px; margin:0 auto 40px; }
-  .scroll-hint {
-    position:absolute; bottom:40px; left:50%; transform:translateX(-50%);
-    display:flex; flex-direction:column; align-items:center; gap:8px;
-    color:var(--text2); font-size:12px; animation:bounce 2s infinite;
+  .hero p {
+    font-size: 18px; color: rgba(255,255,255,0.75); max-width: 520px;
+    margin: 0 auto 44px; line-height: 1.7;
   }
-  .scroll-hint .arrow { width:20px; height:20px; border-right:2px solid var(--text2); border-bottom:2px solid var(--text2); transform:rotate(45deg); }
-  @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+  .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 28px; border-radius: 100px;
+    font-size: 15px; font-weight: 500; text-decoration: none;
+    cursor: pointer; border: none; transition: all var(--transition);
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: var(--accent-mint); color: #1C1917;
+    box-shadow: 0 2px 8px rgba(65,210,160,0.2);
+    font-weight: 600;
+  }
+  .btn-primary:hover { background: var(--accent-mint-hover); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(65,210,160,0.3); }
+  .btn-ghost {
+    background: transparent; color: rgba(255,255,255,0.85);
+    border: 1px solid rgba(255,255,255,0.35);
+  }
+  .btn-ghost:hover { border-color: var(--accent-mint); color: var(--accent-mint); background: rgba(65,210,160,0.1); }
+  .scroll-indicator {
+    position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    color: rgba(255,255,255,0.6); font-size: 12px; font-weight: 450;
+    animation: floatUpDown 2.2s ease-in-out infinite; opacity: 0.8;
+    z-index: 1;
+  }
+  .scroll-indicator .line { width: 1px; height: 32px; background: linear-gradient(180deg, rgba(255,255,255,0.5), transparent); }
+  @keyframes floatUpDown {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
 
-  section { padding:80px 40px; max-width:1280px; margin:0 auto; }
-
-  .section-label {
-    display:inline-block; padding:4px 12px; border-radius:100px;
-    font-size:12px; font-weight:600; letter-spacing:0.05em; margin-bottom:12px;
+  /* Sections */
+  section { padding: 100px 48px; max-width: 1240px; margin: 0 auto; }
+  .section-header { text-align: center; margin-bottom: 64px; }
+  .section-tag {
+    display: inline-block; padding: 4px 14px; border-radius: 100px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase; margin-bottom: 16px;
   }
-  .section-label.ai  { background:rgba(167,139,250,0.12); color:var(--accent-ai); }
-  .section-label.anim { background:rgba(52,211,153,0.12); color:var(--accent-anim); }
-  .section-header { text-align:center; margin-bottom:60px; }
-  .section-header h2 { font-size:clamp(28px,4vw,40px); font-weight:700; margin-bottom:12px; letter-spacing:-0.01em; }
-  .section-header p { color:var(--text2); font-size:16px; }
+  .section-tag.ai  { background: #ECFDF5; color: #0E9E63; }
+  .section-tag.anim { background: var(--accent-cool-light); color: var(--accent-cool-dark); }
+  .section-header h2 { font-size: clamp(28px, 4vw, 40px); font-weight: 700; margin-bottom: 12px; letter-spacing: -0.015em; }
+  .section-header p { color: var(--text2); font-size: 16px; }
 
-  .divider {
-    max-width:200px; margin:0 auto 80px;
-    height:1px;
-    background:linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  .section-divider {
+    max-width: 120px; margin: 0 auto 80px;
+    height: 1px; background: var(--border);
   }
 
+  /* Gallery */
   .gallery {
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(340px, 1fr));
-    gap:24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
   }
   .video-card {
-    background:var(--surface);
-    border-radius:var(--radius); overflow:hidden;
-    border:1px solid rgba(255,255,255,0.06);
-    cursor:pointer;
-    transition:transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    background: var(--surface); border-radius: var(--radius); overflow: hidden;
+    border: 1px solid var(--border-light);
+    cursor: pointer; transition: all var(--transition);
+    position: relative; top: 0;
   }
-  .video-card:hover { transform:translateY(-4px); }
-  .video-card.ai:hover {
-    box-shadow:0 20px 60px rgba(124,58,237,0.15);
-    border-color:rgba(167,139,250,0.3);
-  }
-  .video-card.anim:hover {
-    box-shadow:0 20px 60px rgba(52,211,153,0.12);
-    border-color:rgba(52,211,153,0.3);
+  .video-card:hover {
+    top: -6px;
+    box-shadow: var(--shadow-lg);
+    border-color: transparent;
   }
   .video-card .thumb {
-    position:relative; aspect-ratio:16/9;
-    background:var(--surface2); overflow:hidden;
+    position: relative; aspect-ratio: 16/9;
+    background: var(--surface2); overflow: hidden;
   }
   .video-card .thumb img {
-    width:100%; height:100%; object-fit:cover;
-    transition:transform 0.4s;
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
   }
-  .video-card:hover .thumb img { transform:scale(1.05); }
+  .video-card:hover .thumb img { transform: scale(1.06); }
   .video-card .thumb .duration {
-    position:absolute; bottom:8px; right:8px;
-    padding:2px 8px; border-radius:6px;
-    background:rgba(0,0,0,0.75); color:#fff;
-    font-size:12px; font-weight:500;
+    position: absolute; bottom: 10px; right: 10px;
+    padding: 3px 9px; border-radius: 6px;
+    background: rgba(28,25,23,0.82); color: #fff;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.02em;
   }
   .video-card .play-overlay {
-    position:absolute; inset:0;
-    display:flex; align-items:center; justify-content:center;
-    background:rgba(0,0,0,0.25);
-    opacity:0; transition:opacity 0.3s;
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(28,25,23,0.18);
+    opacity: 0; transition: opacity var(--transition);
   }
-  .video-card:hover .play-overlay { opacity:1; }
+  .video-card:hover .play-overlay { opacity: 1; }
   .play-overlay .circle {
-    width:56px; height:56px; border-radius:50%;
-    background:rgba(255,255,255,0.95);
-    display:flex; align-items:center; justify-content:center;
-    box-shadow:0 8px 32px rgba(0,0,0,0.3);
+    width: 52px; height: 52px; border-radius: 50%;
+    background: rgba(255,255,255,0.94); display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.15);
   }
-  .video-card.ai .play-overlay .triangle {
-    border-left:18px solid var(--accent-ai2);
-    border-top:10px solid transparent;
-    border-bottom:10px solid transparent;
-    margin-left:4px;
+  .play-overlay .triangle {
+    width: 0; height: 0;
+    border-left: 16px solid #0E9E63;
+    border-top: 9px solid transparent; border-bottom: 9px solid transparent;
+    margin-left: 3px;
   }
-  .video-card.anim .play-overlay .triangle {
-    border-left:18px solid var(--accent-anim2);
-    border-top:10px solid transparent;
-    border-bottom:10px solid transparent;
-    margin-left:4px;
-  }
-  .video-card .info { padding:20px; }
+  .video-card .info { padding: 22px 24px; }
   .video-card .info .cat {
-    font-size:11px; font-weight:600; letter-spacing:0.05em; margin-bottom:6px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 6px;
+    color: var(--text3);
   }
-  .video-card.ai .info .cat { color:var(--accent-ai); }
-  .video-card.anim .info .cat { color:var(--accent-anim); }
-  .video-card .info h3 { font-size:16px; font-weight:600; margin-bottom:4px; }
-  .video-card .info .meta { font-size:13px; color:var(--text2); }
+  .video-card.ai .info .cat { color: #0E9E63; }
+  .video-card.anim .info .cat { color: var(--accent-cool); }
+  .video-card .info h3 { font-size: 16px; font-weight: 600; color: var(--text); line-height: 1.4; }
 
+  /* Storyboard Card Stack */
+  .storyboard-section { padding-top: 40px; }
+  .card-stack-wrapper {
+    position: relative;
+    max-width: 760px;
+    margin: 0 auto;
+    perspective: 1200px;
+    height: 520px;
+  }
+  .card-stack {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .storyboard-card {
+    position: absolute;
+    width: 88%;
+    max-width: 700px;
+    aspect-ratio: 16/10;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+    transform-style: preserve-3d;
+    transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+                opacity 0.45s ease,
+                box-shadow 0.45s ease;
+  }
+  .storyboard-card img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    background: #FAF8F5;
+  }
+  .storyboard-card .card-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 12px 20px;
+    background: linear-gradient(transparent, rgba(28,25,23,0.6));
+    color: #fff;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.02em;
+  }
+  .storyboard-card.behind-1 {
+    transform: translateY(12px) scale(0.96);
+    opacity: 0.55; z-index: 0; pointer-events: none;
+  }
+  .storyboard-card.behind-2 {
+    transform: translateY(24px) scale(0.92);
+    opacity: 0.28; z-index: -1; pointer-events: none;
+  }
+  .storyboard-card.behind-3 {
+    transform: translateY(36px) scale(0.88);
+    opacity: 0.12; z-index: -2; pointer-events: none;
+  }
+  .storyboard-card.top { z-index: 2; opacity: 1; }
+  .storyboard-card.top.tilt-left {
+    transform: rotateY(-14deg) translateX(-18px);
+    box-shadow: -16px 8px 40px rgba(0,0,0,0.1);
+  }
+  .storyboard-card.top.tilt-right {
+    transform: rotateY(14deg) translateX(18px);
+    box-shadow: 16px 8px 40px rgba(0,0,0,0.1);
+  }
+  .storyboard-card.fly-left {
+    transform: translateX(-120%) rotateY(-25deg) rotateZ(-5deg);
+    opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.55, 0, 0.1, 1),
+                opacity 0.4s ease;
+  }
+  .storyboard-card.fly-right {
+    transform: translateX(120%) rotateY(25deg) rotateZ(5deg);
+    opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.55, 0, 0.1, 1),
+                opacity 0.4s ease;
+  }
+  .card-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 32px;
+  }
+  .card-arrow {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all var(--transition);
+    font-family: inherit;
+  }
+  .card-arrow:hover {
+    border-color: var(--accent-mint);
+    color: #0E9E63;
+    background: #EDFDF5;
+  }
+  .card-arrow:active { transform: scale(0.94); }
+  .card-counter {
+    font-size: 14px; font-weight: 500;
+    color: var(--text2);
+    min-width: 60px; text-align: center;
+    letter-spacing: 0.04em;
+  }
+  .card-dots {
+    display: flex; gap: 8px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .card-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: all var(--transition);
+    cursor: pointer;
+  }
+  .card-dot.active { background: var(--accent-mint); width: 20px; border-radius: 4px; }
+
+  /* About */
+  #about { padding-top: 60px; }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start;
+  }
+  .about-visual { position: sticky; top: 120px; }
+  .about-visual .image-frame {
+    aspect-ratio: 4/5; border-radius: var(--radius-lg); overflow: hidden;
+    background: var(--surface2); border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+  }
+  .about-visual .image-frame img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .about-visual .image-frame .placeholder {
+    width: 100%; height: 100%; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; color: var(--text3);
+    background: linear-gradient(135deg, #FBF8F4 0%, #F0EBE5 100%);
+    text-align: center; gap: 16px;
+  }
+  .about-visual .image-frame .placeholder .icon { font-size: 56px; }
+  .about-visual .image-frame .placeholder .label { font-size: 14px; font-weight: 450; }
+
+  .about-text h2 {
+    font-size: 32px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.015em;
+  }
+  .about-text .subtitle { color: var(--text2); font-size: 15px; margin-bottom: 32px; }
+  .about-block { margin-bottom: 28px; }
+  .about-block h3 {
+    font-size: 14px; font-weight: 600; letter-spacing: 0.04em;
+    color: var(--accent-cool-dark); margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .about-block h3::before {
+    content: ''; width: 4px; height: 14px; border-radius: 2px;
+    background: var(--accent-mint); display: inline-block;
+  }
+  .about-block p { color: var(--text2); font-size: 14.5px; line-height: 1.8; }
+
+  .skill-cloud { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .skill-tag {
+    padding: 7px 16px; border-radius: 100px;
+    font-size: 13px; font-weight: 450; cursor: default;
+    transition: all var(--transition);
+    background: var(--surface); border: 1px solid var(--border-light); color: var(--text2);
+  }
+  .skill-tag:hover {
+    background: var(--accent-cool-light); border-color: var(--accent-cool);
+    color: var(--accent-cool-dark); transform: translateY(-1px);
+  }
+  .skill-tag.highlight {
+    background: #ECFDF5; border-color: var(--accent-mint); color: #0E9E63;
+  }
+
+  .philosophy-bar {
+    display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px;
+  }
+  .philosophy-item {
+    flex: 1; min-width: 100px; text-align: center;
+    padding: 18px 12px; border-radius: var(--radius-sm);
+    background: var(--surface); border: 1px solid var(--border-light);
+    transition: all var(--transition);
+  }
+  .philosophy-item:hover { border-color: var(--accent-mint); transform: translateY(-2px); }
+  .philosophy-item .order {
+    font-size: 24px; font-weight: 700; color: var(--accent-mint);
+    letter-spacing: -0.02em;
+  }
+  .philosophy-item .label { font-size: 12px; color: var(--text2); margin-top: 4px; }
+
+  /* Modal */
   .modal {
-    position:fixed; inset:0; z-index:200;
-    background:rgba(0,0,0,0.92);
-    display:flex; align-items:center; justify-content:center;
-    opacity:0; pointer-events:none; transition:opacity 0.3s;
+    position: fixed; inset: 0; z-index: 1100;
+    background: rgba(28,25,23,0.94);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.35s;
   }
-  .modal.open { opacity:1; pointer-events:all; }
+  .modal.open { opacity: 1; pointer-events: all; }
   .modal .close {
-    position:absolute; top:24px; right:32px;
-    width:44px; height:44px; border-radius:50%;
-    background:rgba(255,255,255,0.1); border:none;
-    color:#fff; font-size:24px; cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    transition:background 0.3s; z-index:10;
+    position: absolute; top: 24px; right: 36px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+    color: #fff; font-size: 22px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all var(--transition); z-index: 10;
+    font-family: inherit; line-height: 1;
   }
-  .modal .close:hover { background:rgba(255,255,255,0.2); }
+  .modal .close:hover { background: rgba(255,255,255,0.18); }
   .modal .title-bar {
-    position:absolute; top:28px; left:50%; transform:translateX(-50%);
-    color:#fff; font-size:18px; font-weight:600; z-index:5;
+    position: absolute; top: 30px; left: 50%; transform: translateX(-50%);
+    color: #fff; font-size: 17px; font-weight: 500; z-index: 5;
+    opacity: 0.8;
   }
   .modal .player-wrap {
-    width:90vw; max-width:1100px; aspect-ratio:16/9;
-    border-radius:12px; overflow:hidden;
-    box-shadow:0 40px 120px rgba(0,0,0,0.5); background:#000;
+    width: 90vw; max-width: 1100px; aspect-ratio: 16/9;
+    border-radius: 12px; overflow: hidden;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.4); background: #000;
   }
-  .modal .player-wrap iframe { width:100%; height:100%; border:0; }
-
-  .about {
-    display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
-  }
-  .about-img {
-    aspect-ratio:4/3; border-radius:var(--radius); overflow:hidden;
-    background:var(--surface); border:1px solid rgba(255,255,255,0.06);
-  }
-  .about-img img { width:100%; height:100%; object-fit:cover; }
-  .about-text h2 { font-size:32px; margin-bottom:20px; }
-  .about-text p { color:var(--text2); margin-bottom:16px; font-size:15px; }
-  .about-text .two-col { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:20px; }
-  .about-text .stat { text-align:center; padding:16px; background:var(--surface); border-radius:12px; border:1px solid rgba(255,255,255,0.06); }
-  .about-text .stat .num { font-size:28px; font-weight:700; }
-  .about-text .stat .num.ai { color:var(--accent-ai); }
-  .about-text .stat .num.anim { color:var(--accent-anim); }
-  .about-text .stat .label { font-size:13px; color:var(--text2); margin-top:4px; }
-
-  .skills { display:flex; flex-wrap:wrap; gap:8px; margin-top:24px; }
-  .skill-tag {
-    padding:6px 14px; border-radius:100px;
-    background:rgba(167,139,250,0.1); border:1px solid rgba(167,139,250,0.2);
-    color:var(--accent-ai); font-size:13px; font-weight:500;
-  }
+  .modal .player-wrap iframe { width: 100%; height: 100%; border: 0; }
 
   footer {
-    text-align:center; padding:40px;
-    border-top:1px solid rgba(255,255,255,0.06);
-    color:var(--text2); font-size:14px;
+    text-align: center; padding: 48px 40px;
+    border-top: 1px solid var(--border);
+    color: var(--text3); font-size: 13px;
+  }
+  footer .footer-links { display: flex; gap: 24px; justify-content: center; margin-bottom: 16px; }
+  footer .footer-links a { color: var(--text2); text-decoration: none; transition: color var(--transition); font-weight: 450; }
+  footer .footer-links a:hover { color: var(--accent-mint); }
+
+  /* Reveal animations */
+  .reveal {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.7s cubic-bezier(0.25, 0.1, 0.25, 1),
+                transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    nav { padding: 14px 20px; }
+    nav.scrolled { padding: 10px 20px; }
+    nav .links { gap: 18px; }
+    nav .links a { font-size: 13px; }
+    nav .logo { font-size: 18px; }
+    section { padding: 56px 20px; }
+    .gallery { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; gap: 32px; }
+    .about-visual { position: static; }
+    .about-visual .image-frame { aspect-ratio: 4/3; max-width: 400px; margin: 0 auto; }
+    .hero { width: 100%; max-width: none; height: 100vh; padding: 30px 20px; }
+    .hero h1 { font-size: clamp(28px, 7vw, 44px); color: #fff; }
+    .hero p { font-size: 16px; color: rgba(255,255,255,0.75); }
+    .hero-actions { flex-direction: column; align-items: center; }
+    .modal .player-wrap { width: 96vw; }
+    .modal .title-bar { font-size: 14px; top: 20px; }
+    .modal .close { top: 16px; right: 16px; }
+    .philosophy-bar { gap: 8px; }
+    .philosophy-item { min-width: 60px; padding: 14px 8px; }
+    .philosophy-item .order { font-size: 20px; }
+    .card-stack-wrapper { height: 360px; max-width: 100%; }
+    .storyboard-card { width: 92%; }
+    .storyboard-card.top.tilt-left { transform: rotateY(-8deg) translateX(-10px); }
+    .storyboard-card.top.tilt-right { transform: rotateY(8deg) translateX(10px); }
+    .card-nav { gap: 16px; margin-top: 24px; }
+    .card-arrow { width: 40px; height: 40px; font-size: 15px; }
   }
 
-  @media (max-width:768px) {
-    nav { padding:14px 20px; }
-    nav .links { gap:16px; }
-    section { padding:60px 20px; }
-    .gallery { grid-template-columns:1fr; }
-    .about { grid-template-columns:1fr; gap:32px; }
-    .hero { padding:100px 20px 60px; }
-    .modal .player-wrap { width:95vw; }
-    .modal .title-bar { font-size:14px; top:20px; }
-    .about-text .two-col { grid-template-columns:1fr 1fr; }
-  }
-
-  .particles { position:fixed; inset:0; pointer-events:none; z-index:0; }
-  .particle {
-    position:absolute; border-radius:50%; opacity:0.1;
-    animation:float 20s infinite ease-in-out;
-  }
-  .particle.p1 { background:var(--accent-ai); }
-  .particle.p2 { background:var(--accent-anim); }
-  @keyframes float {
-    0%,100%{transform:translateY(0) translateX(0) scale(1)}
-    25%{transform:translateY(-60px) translateX(30px) scale(0.8)}
-    50%{transform:translateY(-20px) translateX(-20px) scale(1.1)}
-    75%{transform:translateY(-80px) translateX(-40px) scale(0.9)}
+  @media (max-width: 480px) {
+    nav { padding: 10px 14px; }
+    nav.scrolled { padding: 8px 14px; }
+    nav .logo { font-size: 16px; }
+    nav .links { gap: 10px; }
+    nav .links a { font-size: 12px; }
+    section { padding: 44px 14px; }
+    .hero { width: 100%; max-width: none; height: 100vh; padding: 24px 14px; }
+    .hero h1 { font-size: clamp(26px, 8vw, 36px); color: #fff; }
+    .hero p { font-size: 14px; margin-bottom: 28px; color: rgba(255,255,255,0.75); }
+    .hero-eyebrow { font-size: 11px; padding: 4px 12px; margin-bottom: 20px; }
+    .btn { padding: 10px 20px; font-size: 13px; }
+    .section-header h2 { font-size: 24px; }
+    .section-header p { font-size: 14px; }
+    .about-text h2 { font-size: 24px; }
+    .about-text .subtitle { font-size: 13px; }
+    .about-block h3 { font-size: 13px; }
+    .about-block p { font-size: 13px; }
+    .about-visual .image-frame { max-width: 100%; aspect-ratio: 3/4; }
+    .philosophy-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .philosophy-item { padding: 12px 8px; }
+    .philosophy-item .order { font-size: 18px; }
+    .card-stack-wrapper { height: 260px; perspective: 800px; }
+    .storyboard-card { width: 94%; border-radius: var(--radius-sm); }
+    .storyboard-card .card-label { font-size: 11px; padding: 8px 14px; }
+    .storyboard-card.top.tilt-left,
+    .storyboard-card.top.tilt-right { transform: none; }
+    .storyboard-card.behind-1 { transform: translateY(8px) scale(0.97); }
+    .storyboard-card.behind-2 { transform: translateY(16px) scale(0.93); opacity: 0.2; }
+    .storyboard-card.behind-3 { display: none; }
+    .card-nav { gap: 12px; margin-top: 18px; }
+    .card-arrow { width: 36px; height: 36px; font-size: 14px; }
+    .card-counter { font-size: 12px; min-width: 48px; }
+    .card-dots { gap: 6px; margin-top: 14px; }
+    .card-dot { width: 6px; height: 6px; }
+    .card-dot.active { width: 16px; }
+    .footer-links { flex-wrap: wrap; gap: 12px; }
+    .skill-tag { font-size: 12px; padding: 5px 12px; }
   }
 </style>
 </head>
 <body>
 
-<div class="particles" id="particles"></div>
+<div class="scroll-progress" id="scrollProgress"></div>
 
-<nav>
-  <div class="logo">Portfolio</div>
+<nav id="nav">
+  <div class="logo">Wellsure<div class="logo-dot"></div></div>
   <ul class="links">
     <li><a href="#ai">AI 视频</a></li>
-    <li><a href="#anim">个人动画</a></li>
+    <li><a href="#anim">动画</a></li>
+    <li><a href="#storyboard">分镜</a></li>
     <li><a href="#about">关于</a></li>
   </ul>
 </nav>
 
+<!-- Hero -->
 <section class="hero" id="hero">
   <div class="hero-content">
-    <div class="hero-badges">
-      <span class="badge-ai">AI 视频广告</span>
-      <span class="badge-anim">个人动画短片</span>
+    <div class="hero-eyebrow">AI Video &amp; Animation Portfolio</div>
+    <h1>用<span class="highlight">AI</span>与<span class="highlight">画笔</span><br>创造视觉故事</h1>
+    <p>AI 商业视频广告 + 原创动画短片，从概念到成片的全方位视觉创作</p>
+    <div class="hero-actions">
+      <a href="#ai" class="btn btn-primary">查看作品</a>
+      <a href="#about" class="btn btn-ghost">了解更多</a>
     </div>
-    <h1>用<span class="ai">AI</span> 与 <span class="anim">画笔</span><br>创造视觉故事</h1>
-    <p>AI 商业视频 + 原创动画短片作品集，展示从商业广告到个人创作的全方位视觉能力</p>
   </div>
-  <div class="scroll-hint">
+  <div class="scroll-indicator">
     <span>向下滚动查看作品</span>
-    <div class="arrow"></div>
+    <div class="line"></div>
   </div>
 </section>
 
 <!-- AI 视频 -->
 <section id="ai">
-  <div class="section-header">
-    <div class="section-label ai">AI VIDEO</div>
+  <div class="section-header reveal">
+    <div class="section-tag ai">AI Video</div>
     <h2>AI 视频作品</h2>
-    <p>使用 AI 工具生成的商业广告视频，展示 AI 视觉创作能力</p>
+    <p>使用前沿 AI 工具生成的商业广告视频</p>
   </div>
   <div class="gallery" id="gallery-ai"></div>
 </section>
 
-<div class="divider"></div>
+<div class="section-divider"></div>
 
 <!-- 个人动画 -->
 <section id="anim">
-  <div class="section-header">
-    <div class="section-label anim">ANIMATION</div>
+  <div class="section-header reveal">
+    <div class="section-tag anim">Animation</div>
     <h2>个人动画作品</h2>
     <p>原创动画短片，独立完成从创意到成片的完整流程</p>
   </div>
   <div class="gallery" id="gallery-anim"></div>
 </section>
 
-<section id="about">
-  <div class="section-header">
-    <h2>关于我</h2>
-    <p>AI 视觉创作者 & 动画人</p>
+<div class="section-divider"></div>
+
+<!-- 分镜设计 -->
+<section id="storyboard" class="storyboard-section">
+  <div class="section-header reveal">
+    <div class="section-tag anim">Storyboard</div>
+    <h2>分镜设计</h2>
+    <p>鼠标指向卡片左右两侧翻页浏览分镜稿</p>
   </div>
-  <div class="about">
-    <div class="about-img">
-      <img src="16.png" alt="作品海报">
-    </div>
-    <div class="about-text">
-      <h2>AI 视频创作者</h2>
-      <p>致力于利用最新的生成式 AI 技术，创作高质量的视觉内容。从概念设计到成品输出，AI 工具贯穿整个创作流程。</p>
-      <p>擅长即梦（Jimeng）、Runway、Pika 等主流 AI 视频生成平台，能够精准控制分镜、风格和人物动作，确保每一帧都达到专业水准。同时具备独立动画制作能力，从手绘到后期全流程把控。</p>
-      <div class="two-col">
-        <div class="stat"><div class="num ai">4</div><div class="label">AI 商业视频</div></div>
-        <div class="stat"><div class="num anim">5</div><div class="label">原创动画短片</div></div>
+  <div class="card-stack-wrapper reveal" id="cardStackWrapper">
+    <div class="card-stack" id="cardStack"></div>
+  </div>
+  <div class="card-nav reveal reveal-delay-1">
+    <button class="card-arrow" id="cardPrev">◀</button>
+    <span class="card-counter" id="cardCounter">1 / 6</span>
+    <button class="card-arrow" id="cardNext">▶</button>
+  </div>
+  <div class="card-dots reveal reveal-delay-2" id="cardDots"></div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- 关于我 -->
+<section id="about">
+  <div class="section-header reveal">
+    <h2>关于我</h2>
+    <p>AI 视觉创作者 · 动画人 · 品牌策划</p>
+  </div>
+  <div class="about-grid">
+    <div class="about-visual reveal reveal-delay-1">
+      <div class="image-frame">
+        <img src="个人形象照.png" alt="个人形象照" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="placeholder" style="display:none">
+          <div class="icon">🎬</div>
+          <div class="label">作品海报</div>
+        </div>
       </div>
-      <div class="skills">
-        <span class="skill-tag">AI 视频生成</span>
-        <span class="skill-tag">即梦 Jimeng</span>
-        <span class="skill-tag">Runway</span>
-        <span class="skill-tag">Pika</span>
-        <span class="skill-tag">分镜设计</span>
-        <span class="skill-tag">动画制作</span>
-        <span class="skill-tag">后期剪辑</span>
+    </div>
+    <div class="about-text reveal reveal-delay-2">
+      <h2>彭微尧</h2>
+      <p class="subtitle">品牌策划 · IP 孵化 · 动画全流程 · AI 工具应用</p>
+
+      <div class="philosophy-bar">
+        <div class="philosophy-item">
+          <div class="order">①</div>
+          <div class="label">执行</div>
+        </div>
+        <div class="philosophy-item">
+          <div class="order">②</div>
+          <div class="label">落地</div>
+        </div>
+        <div class="philosophy-item">
+          <div class="order">③</div>
+          <div class="label">创意</div>
+        </div>
+        <div class="philosophy-item">
+          <div class="order">④</div>
+          <div class="label">技术</div>
+        </div>
+      </div>
+
+      <div class="about-block">
+        <h3>专业背景</h3>
+        <p>IP 生态开发，动画全流程制作，平面设计，AI 短剧导演，拍摄剪辑，插画能力。曾组建并管理设计团队，负责与客户沟通项目细节、成员工作分配和协调，承接香港城市大学、成都经开区等大学、政府机构及企业项目。</p>
+      </div>
+
+      <div class="about-block">
+        <h3>个人特质</h3>
+        <p>有团队意识，能解决问题，能负起责任。5000+ 资深电影动漫爱好者，深谙视听语言及剧本创作能力。坐在路由器上冲浪，梗百科，网感极好，社媒个人单个视频播放量 2w+，评论点赞量日常过万。</p>
+      </div>
+
+      <div class="about-block">
+        <h3>软件技能</h3>
+        <div class="skill-cloud">
+          <span class="skill-tag highlight">AI</span>
+          <span class="skill-tag highlight">PS</span>
+          <span class="skill-tag">SAI</span>
+          <span class="skill-tag highlight">AE</span>
+          <span class="skill-tag">An</span>
+          <span class="skill-tag highlight">PR</span>
+          <span class="skill-tag">TBS</span>
+          <span class="skill-tag">TBH</span>
+        </div>
+      </div>
+
+      <div class="about-block">
+        <h3>AI 工具栈</h3>
+        <div class="skill-cloud">
+          <span class="skill-tag highlight">ChatGPT</span>
+          <span class="skill-tag highlight">Claude</span>
+          <span class="skill-tag">Gemini</span>
+          <span class="skill-tag highlight">DeepSeek</span>
+          <span class="skill-tag">即梦</span>
+          <span class="skill-tag">Coze</span>
+          <span class="skill-tag">Nano Banana</span>
+          <span class="skill-tag">OpenClaw</span>
+        </div>
+      </div>
+
+      <div class="about-block">
+        <h3>求职意向</h3>
+        <p>希望找到一份有晋升空间和提升空间，能够长期胜任的稳定工作。是一位有自驱力并且跟随大环境实时学习的员工。</p>
       </div>
     </div>
   </div>
 </section>
 
 <footer>
-  <p>&copy; 2025 Portfolio. AI Videos & Original Animations.</p>
+  <div class="footer-links">
+    <a href="#">首页</a>
+    <a href="#ai">AI 视频</a>
+    <a href="#anim">动画作品</a>
+    <a href="#storyboard">分镜设计</a>
+    <a href="#about">关于我</a>
+  </div>
+  <p>&copy; 2025 Wellsure. AI Videos &amp; Original Animations.</p>
 </footer>
 
+<!-- Modal -->
 <div class="modal" id="modal">
   <div class="title-bar" id="modalTitle"></div>
   <button class="close" id="modalClose">&times;</button>
@@ -359,20 +753,15 @@ const animWorks = [
   { title:'阿尧和阿林的日常',                           bvid:'BV19WxrefEDK', cat:'原创动画', cover:'https://i2.hdslb.com/bfs/archive/db0b67d6fd46803e231224684181d2fdba44f451.jpg', dur:'1:00' },
 ];
 
-const modal = document.getElementById('modal');
-const modalTitle = document.getElementById('modalTitle');
-const modalPlayer = document.getElementById('modalPlayer');
-const modalClose = document.getElementById('modalClose');
-
 function buildSection(galleryId, works, category) {
   const gallery = document.getElementById(galleryId);
-  for (const w of works) {
+  works.forEach((w, i) => {
     const card = document.createElement('div');
-    card.className = 'video-card ' + category;
+    card.className = 'video-card ' + category + ' reveal reveal-delay-' + Math.min(i, 4);
     card.innerHTML = `
       <div class="thumb">
         <img src="${w.cover}" alt="${w.title}" loading="lazy"
-             onerror="this.parentElement.innerHTML='<div style=width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text2)>封面</div>'">
+             onerror="this.parentElement.innerHTML='<div style=width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text3)>封面</div>'">
         <div class="duration">${w.dur}</div>
         <div class="play-overlay">
           <div class="circle"><div class="triangle"></div></div>
@@ -384,48 +773,159 @@ function buildSection(galleryId, works, category) {
       </div>
     `;
     card.addEventListener('click', () => {
-      modalTitle.textContent = w.title;
-      modalPlayer.innerHTML = `<iframe src="//player.bilibili.com/player.html?bvid=${w.bvid}&page=1&high_quality=1&autoplay=1" allowfullscreen></iframe>`;
-      modal.classList.add('open');
+      document.getElementById('modalTitle').textContent = w.title;
+      document.getElementById('modalPlayer').innerHTML = `<iframe src="//player.bilibili.com/player.html?bvid=${w.bvid}&page=1&high_quality=1&autoplay=1" allowfullscreen></iframe>`;
+      document.getElementById('modal').classList.add('open');
     });
     gallery.appendChild(card);
-  }
+  });
 }
 
 buildSection('gallery-ai', aiWorks, 'ai');
 buildSection('gallery-anim', animWorks, 'anim');
 
-modalClose.addEventListener('click', () => {
+// Modal
+const modal = document.getElementById('modal');
+document.getElementById('modalClose').addEventListener('click', () => {
   modal.classList.remove('open');
-  modalPlayer.innerHTML = '';
+  document.getElementById('modalPlayer').innerHTML = '';
 });
 modal.addEventListener('click', e => {
   if (e.target === modal) {
     modal.classList.remove('open');
-    modalPlayer.innerHTML = '';
+    document.getElementById('modalPlayer').innerHTML = '';
   }
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && modal.classList.contains('open')) {
     modal.classList.remove('open');
-    modalPlayer.innerHTML = '';
+    document.getElementById('modalPlayer').innerHTML = '';
   }
 });
 
-// Particles
-const pc = document.getElementById('particles');
-for (let i=0;i<12;i++) {
-  const p = document.createElement('div');
-  p.className = 'particle ' + (i%2 ? 'p1' : 'p2');
-  const s = Math.random()*4+2;
-  p.style.cssText = `
-    width:${s}px; height:${s}px;
-    left:${Math.random()*100}%; top:${Math.random()*100}%;
-    animation-delay:${Math.random()*20}s;
-    animation-duration:${Math.random()*20+15}s;
-  `;
-  pc.appendChild(p);
+// Scroll progress bar
+const progressBar = document.getElementById('scrollProgress');
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  progressBar.style.width = docHeight > 0 ? (scrollTop / docHeight) * 100 + '%' : '0%';
+}, { passive: true });
+
+// Nav scroll effect
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+}, { passive: true });
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Storyboard Card Stack ─────────────────
+const storyboardImages = [
+  '新加分镜图/1.png', '新加分镜图/2.png', '新加分镜图/3.png',
+  '新加分镜图/4.png', '新加分镜图/5.png', '新加分镜图/6.png',
+];
+
+let currentCardIdx = 0;
+const totalCards = storyboardImages.length;
+const cardStack = document.getElementById('cardStack');
+const cardWrapper = document.getElementById('cardStackWrapper');
+const cardCounter = document.getElementById('cardCounter');
+const cardDots = document.getElementById('cardDots');
+
+for (let i = 0; i < totalCards; i++) {
+  const dot = document.createElement('div');
+  dot.className = 'card-dot' + (i === 0 ? ' active' : '');
+  dot.addEventListener('click', () => goToCard(i));
+  cardDots.appendChild(dot);
 }
+
+const cardEls = [];
+for (let i = 0; i < totalCards; i++) {
+  const card = document.createElement('div');
+  card.className = 'storyboard-card';
+  card.innerHTML = `<img src="${storyboardImages[i]}" alt="分镜 ${i + 1}" loading="lazy"><div class="card-label">分镜 ${i + 1} / ${totalCards}</div>`;
+  cardStack.appendChild(card);
+  cardEls.push(card);
+}
+
+function updateStack() {
+  cardEls.forEach(card => { card.className = 'storyboard-card'; });
+  cardEls[currentCardIdx].classList.add('top');
+  let behindLevel = 1;
+  for (let i = currentCardIdx + 1; i < totalCards && behindLevel <= 3; i++) {
+    cardEls[i].classList.add('behind-' + behindLevel);
+    behindLevel++;
+  }
+  cardCounter.textContent = `${currentCardIdx + 1} / ${totalCards}`;
+  const dots = cardDots.querySelectorAll('.card-dot');
+  dots.forEach((d, i) => d.classList.toggle('active', i === currentCardIdx));
+}
+
+function goToCard(idx) {
+  idx = ((idx % totalCards) + totalCards) % totalCards;
+  if (idx === currentCardIdx) return;
+  let dir;
+  const diff = idx - currentCardIdx;
+  if (diff > 0 && diff <= totalCards / 2) dir = 'right';
+  else if (diff < 0 && diff >= -totalCards / 2) dir = 'left';
+  else dir = diff > 0 ? 'left' : 'right';
+  const oldCard = cardEls[currentCardIdx];
+  currentCardIdx = idx;
+  oldCard.classList.add('fly-' + dir);
+  oldCard.addEventListener('transitionend', function handler() {
+    oldCard.removeEventListener('transitionend', handler);
+    oldCard.classList.remove('fly-left', 'fly-right', 'top');
+    updateStack();
+  }, { once: true });
+  oldCard.classList.remove('top');
+  cardEls[currentCardIdx].classList.add('top');
+  let behindLevel = 1;
+  for (let i = currentCardIdx + 1; i < totalCards && behindLevel <= 3; i++) {
+    cardEls[i].classList.add('behind-' + behindLevel);
+    behindLevel++;
+  }
+  cardCounter.textContent = `${currentCardIdx + 1} / ${totalCards}`;
+  const dots = cardDots.querySelectorAll('.card-dot');
+  dots.forEach((d, i) => d.classList.toggle('active', i === currentCardIdx));
+}
+
+cardWrapper.addEventListener('mousemove', (e) => {
+  const rect = cardWrapper.getBoundingClientRect();
+  const ratio = (e.clientX - rect.left) / rect.width;
+  const topCard = cardEls[currentCardIdx];
+  topCard.classList.remove('tilt-left', 'tilt-right');
+  if (ratio < 0.38) topCard.classList.add('tilt-left');
+  else if (ratio > 0.62) topCard.classList.add('tilt-right');
+});
+
+cardWrapper.addEventListener('mouseleave', () => {
+  cardEls[currentCardIdx].classList.remove('tilt-left', 'tilt-right');
+});
+
+cardWrapper.addEventListener('click', (e) => {
+  const rect = cardWrapper.getBoundingClientRect();
+  const ratio = (e.clientX - rect.left) / rect.width;
+  if (ratio < 0.4) goToCard(currentCardIdx - 1);
+  else if (ratio > 0.6) goToCard(currentCardIdx + 1);
+});
+
+document.getElementById('cardPrev').addEventListener('click', () => goToCard(currentCardIdx - 1));
+document.getElementById('cardNext').addEventListener('click', () => goToCard(currentCardIdx + 1));
+
+let touchStartX = 0;
+cardWrapper.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+cardWrapper.addEventListener('touchend', (e) => {
+  const diff = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(diff) > 40) goToCard(currentCardIdx + (diff < 0 ? 1 : -1));
+});
+
+updateStack();
 </script>
 </body>
 </html>
